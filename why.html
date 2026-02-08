@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I Love You 🌸</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: url('https://files.catbox.moe/rvly26.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      margin: 30px 0;
+      color: #ffffff;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    }
+
+    #startBtn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: none;
+      background-color: #ff89b0;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    #startBtn:hover {
+      background-color: #ff69a0;
+    }
+
+    .reasons-container {
+      margin-top: 30px;
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .card {
+      width: 140px;
+      height: 140px;
+      perspective: 1000px;
+    }
+
+    .inner-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .card.flipped .inner-card {
+      transform: rotateY(180deg);
+    }
+
+    .card:hover .inner-card {
+      transform: scale(1.05);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #ff89b0;
+      border-radius: 15px;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .card-back {
+      background-color: #fff0f5;
+      transform: rotateY(180deg);
+    }
+
+    #finalMessage {
+      margin-top: 40px;
+      font-size: 1.5rem;
+      font-family: 'Great Vibes', cursive;
+      color: #ffffff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+      display: none;
+      text-align: center;
+    }
+
+    #oneMoreBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ff89b0;
+      border: none;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .sakura {
+      position: fixed;
+      top: -50px;
+      background: url('https://files.catbox.moe/fex6ra.png') no-repeat center center;
+      background-size: contain;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Why I Love You 💗</h1>
+  <button id="startBtn">Show Me The Reasons</button>
+
+  <div class="reasons-container" id="reasons"></div>
+
+  <div id="finalMessage">You are my forever. 💖</div>
+  <button id="oneMoreBtn" onclick="location.href='letter.html'">One more thing...</button>
+
+  <audio id="bgm" loop>
+    <source src="https://files.catbox.moe/b12qq6.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="chime">
+    <source src="https://files.catbox.moe/3rd61i.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const reasonsContainer = document.getElementById("reasons");
+    const finalMessage = document.getElementById("finalMessage");
+    const oneMoreBtn = document.getElementById("oneMoreBtn");
+    const chime = document.getElementById("chime");
+
+    const reasons = [ "Promise", "the kiss", "hug", "your voice", "your eyes", "Last reason for loving you is..."
+    ];
+
+    const messages = [
+      "the promise i made you are real", "the kiss on your lips were sweet like a candy", "Our first hug was so warm and comforting i want that everyday", "your voice is the sweetest sound in my life", "your eyes are like the stars in the sky, shining bright and beautiful", "Because you make my day beautiful and full of joy."
+    ];
+
+    let flippedCount = 0;
+
+    startBtn.addEventListener("click", () => {
+      const bgm = document.getElementById("bgm");
+      bgm.play().catch((e) => {
+      console.log("Playback prevented 😔", e);
+    });
+
+  startBtn.style.display = "none";
+  reasonsContainer.style.display = "flex";
+  loadReasons();
+});
+
+
+    function loadReasons() {
+      reasons.forEach((reason, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const inner = document.createElement("div");
+        inner.className = "inner-card";
+
+        const front = document.createElement("div");
+        front.className = "card-face card-front";
+        front.innerText = reason;
+
+        const back = document.createElement("div");
+        back.className = "card-face card-back";
+        back.innerText = messages[index] || "There is no last reason... I'm just out of words now... Still... One last surprise.. Scroll down..."; //add text here
+
+        inner.appendChild(front);
+        inner.appendChild(back);
+        card.appendChild(inner);
+
+        card.addEventListener("click", () => {
+          if (!card.classList.contains("flipped")) {
+            card.classList.add("flipped");
+            chime.play();
+            flippedCount++;
+            if (flippedCount === reasons.length) {
+              setTimeout(() => {
+                finalMessage.style.display = "block";
+                oneMoreBtn.style.display = "inline-block";
+              }, 1000);
+            }
+          }
+        });
+
+        reasonsContainer.appendChild(card);
+      });
+    }
+
+    // Sakura Petal Generator 🌸
+    function createPetal() {
+      const petal = document.createElement("div");
+      petal.classList.add("sakura");
+      petal.style.left = Math.random() * 100 + "vw";
+      petal.style.animationDuration = 5 + Math.random() * 5 + "s";
+      const size = 20 + Math.random() * 20;
+      petal.style.width = size + "px";
+      petal.style.height = size + "px";
+      document.body.appendChild(petal);
+      setTimeout(() => petal.remove(), 10000);
+    }
+
+    setInterval(createPetal, 180);
+  </script>
+</body>
+</html>
